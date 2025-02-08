@@ -1,8 +1,17 @@
 from itertools import permutations
 from time import time
 
-array = [1, 2, 3, 4, 5, 6]
+array = [1352, 2345, 3345, 46, 5345345, 66]
 
+def time_decorator(func):
+    def wrapper(araay):
+        tic = time()
+        print(func(array))
+        toc = time() - tic
+        print('Время работы:', toc)
+    return wrapper
+
+@time_decorator
 def narayana(list):
     def backtrack(start):
             if start == len(list):
@@ -20,17 +29,15 @@ def narayana(list):
     backtrack(0)
     return result
 
-
-def johnson_trotter(n):
-    permutation = list(range(1, n + 1))
+@time_decorator
+def johnson_trotter(list_):
+    n = len(list_)
+    permutation = list_
     directions = [-1] * n
-
     result = [permutation.copy()]
-
     while True:
         mobile_index = -1
         mobile_element = -1
-
         for i in range(n):
             direction = directions[i]
             if (i + direction >= 0 and i + direction < n and
@@ -41,7 +48,6 @@ def johnson_trotter(n):
 
         if mobile_index == -1:
             break
-
         direction = directions[mobile_index]
         swap_index = mobile_index + direction
         permutation[mobile_index], permutation[swap_index] = permutation[swap_index], permutation[mobile_index]
@@ -52,26 +58,14 @@ def johnson_trotter(n):
                 directions[i] = -directions[i]
 
         result.append(permutation.copy())
-
     return result
-print('Алгортим Нараяны:')
-tic = time()
-print(narayana(array))
-toc = time() - tic
-print('Время работы:', toc)
 
-print('Алгортим Джонсона-Троттера:')
-tic = time()
-n = 6
-for perm in johnson_trotter(n):
-    print(perm)
-toc = time() - tic
-print('Время работы:', toc)
-
-print('Встроеннный алгортим библиотеки itertools:')
-tic = time()
-permutations = permutations(array)
-for perm in permutations:
-    print(perm)
-toc = time() - tic
-print('Время работы:', toc)
+if __name__ == '__main__':
+    narayana(array)
+    johnson_trotter(array)
+    tic = time()
+    permutations = permutations(array)
+    for perm in permutations:
+        print(perm)
+    toc = time() - tic
+    print('Время работы:', toc)
